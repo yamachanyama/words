@@ -1,17 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Contact } from '../contact';
 import { ContactService } from '../contact.service';
-import { ContactDetailsComponent } from '../contact-details/contact-details.component';
 
 @Component({
   selector: 'contact-list',
   templateUrl: './contact-list.component.html',
-  styleUrls: ['./contact-list.component.css'],
-  providers: [ContactService]
+  styleUrls: ['./contact-list.component.css']
 })
 
 export class ContactListComponent implements OnInit {
-
   contacts: Contact[]
   selectedContact: Contact
   
@@ -39,26 +36,15 @@ export class ContactListComponent implements OnInit {
       });
   }
 
-  private getIndexOfContact = (contactId: String) => {
-    return this.contacts.findIndex((contact) => {
-      return contact._id === contactId;
-    });
-  }
-
   selectContact(contact: Contact) {
     this.selectedContact = contact
   }
 
-  createNewContact() {
-    var contact: Contact = {
-      word: '',
-      meaning: '',
-      NG: 'TRUE',
-      MEMENTO_ID: ''
-    };
-
-    // By default, a newly-created contact will have the selected state.
-    this.selectContact(contact);
+  /*
+  private getIndexOfContact = (contactId: String) => {
+    return this.contacts.findIndex((contact) => {
+      return contact.id === contactId;
+    });
   }
 
   deleteContact = (contactId: String) => {
@@ -84,4 +70,6 @@ export class ContactListComponent implements OnInit {
     }
     return this.contacts;
   }
+  */
+
 }

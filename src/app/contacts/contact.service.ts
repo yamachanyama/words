@@ -1,18 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Contact } from './contact';
 import { Http, Response } from '@angular/http';
-/*
-import { CONTACTDATA } from './contactdata';
-*/
 
 @Injectable()
 export class ContactService {
 
-/*
-    private contactdata:Contact[] = CONTACTDATA;
     private contactsUrl = '/api/contacts';
-*/
+/*
     private contactsUrl = '/assets/contactdata.json';
+*/
+
     constructor (private http: Http) {}
     // get("/api/contacts")
     getContacts(): Promise<Contact[]> {
@@ -21,7 +18,6 @@ export class ContactService {
                  .then(response => response.json() as Contact[])
                  .catch(this.handleError);
     }
-
 /*
     getContacts():Promise<Contact[]> {
       return ()=>this.contactdata;
@@ -36,6 +32,12 @@ export class ContactService {
     }
 
     // get("/api/contacts/:id") endpoint not used by Angular app
+    getContact(getContactID: String): Promise<Contact> {
+      return this.http.get(this.contactsUrl+ '/' + getContactID)
+                 .toPromise()
+                 .then(response => response.json() as Contact)
+                 .catch(this.handleError);
+    }
 
     // delete("/api/contacts/:id")
     deleteContact(delContactId: String): Promise<String> {
@@ -47,7 +49,7 @@ export class ContactService {
 
     // put("/api/contacts/:id")
     updateContact(putContact: Contact): Promise<Contact> {
-      var putUrl = this.contactsUrl + '/' + putContact._id;
+      var putUrl = this.contactsUrl + '/' + putContact.id;
       return this.http.put(putUrl, putContact)
                  .toPromise()
                  .then(response => response.json() as Contact)
