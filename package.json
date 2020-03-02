@@ -25,13 +25,15 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "run-p debug1 debug2",
+    "start": "run-p debug1 debug4",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "debug1": "ng serve --proxy-config proxy.conf.json --open",
-    "debug2": "json-server --watch contactdata2.json --routes routes.json"
+    "debug2": "json-server --watch contactdata2.json --routes routes.json",
+    "debug3": "ng serve --open",
+    "debug4": "node server.js"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.10.0",

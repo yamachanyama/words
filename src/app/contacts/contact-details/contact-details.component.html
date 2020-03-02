@@ -1,7 +1,7 @@
 <div *ngIf="contact" class="row">
   <div class="col-md-12">
-    <h2 *ngIf="contact.id">Word Detail</h2>
-    <h2 *ngIf="!contact.id">New Contact</h2>
+    <h2 *ngIf="contact._id">Word Detail</h2>
+    <h2 *ngIf="!contact._id">New Contact</h2>
   </div>
 </div>
 <div *ngIf="contact" class="row">
@@ -20,9 +20,9 @@
       <input class="form-control" name="contact-NG" [(ngModel)]="contact.NG" placeholder="ng"/>
     </div>
 
-    <button class="btn btn-primary" *ngIf="!contact.id" (click)="createContact(contact)">Create</button>
-    <button class="btn btn-info" *ngIf="contact.id" (click)="updateContact(contact)">Update</button>
-    <button class="btn btn-danger" *ngIf="contact.id" (click)="deleteContact(contact.id)">Delete</button>
+    <button class="btn btn-primary" *ngIf="!contact._id" (click)="createContact()">Create</button>
+    <button class="btn btn-info" *ngIf="contact._id" (click)="updateContact()">Update</button>
+    <button class="btn btn-danger" *ngIf="contact._id" (click)="deleteContact()">Delete</button>
 
     <button class="btn btn-dark" (click)="goBack()">go back</button>
     

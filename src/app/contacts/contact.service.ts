@@ -49,14 +49,14 @@ export class ContactService {
 
     // put("/api/contacts/:id")
     updateContact(putContact: Contact): Promise<Contact> {
-      var putUrl = this.contactsUrl + '/' + putContact.id;
+      var putUrl = this.contactsUrl + '/' + putContact._id;
       return this.http.put(putUrl, putContact)
                  .toPromise()
                  .then(response => response.json() as Contact)
                  .catch(this.handleError);
     }
 
-    private handleError (error: any): Promise<any> {
+    private handleError (error: any){
       let errMsg = (error.message) ? error.message :
       error.status ? `${error.status} - ${error.statusText}` : 'Server error';
       console.error(errMsg); // log to console

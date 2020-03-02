@@ -10,7 +10,9 @@ import { ContactService } from '../contact.service';
 
 export class ContactListComponent implements OnInit {
   contacts: Contact[]
+/*
   selectedContact: Contact
+*/
   
   page=1;
   pageSize=10;
@@ -36,11 +38,11 @@ export class ContactListComponent implements OnInit {
       });
   }
 
+  /*
   selectContact(contact: Contact) {
     this.selectedContact = contact
   }
 
-  /*
   private getIndexOfContact = (contactId: String) => {
     return this.contacts.findIndex((contact) => {
       return contact.id === contactId;

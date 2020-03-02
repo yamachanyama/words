@@ -20,19 +20,20 @@ constructor (
     ) {}
 
 contact: Contact;
+deletedID: String;
 
 ngOnInit(): void {
   this.getContact();
 }
 
 getContact(): void {
-  const id = +this.route.snapshot.paramMap.get('id');
-  console.log(id);
-  if (id == 0) {
+  const _id = this.route.snapshot.paramMap.get('id');
+  console.log(_id);
+  if (_id == '') {
     this.createNewContact();
   }
   else{
-  this.contactService.getContact(id.toString())
+  this.contactService.getContact(_id)
     .then(contact => this.contact = contact);
   }
 }
@@ -43,7 +44,6 @@ goBack(): void{
 
 createNewContact() {
   this.contact = {
-    id: 0,
     word: '',
     meaning: '',
     NG: 'TRUE',
@@ -51,21 +51,23 @@ createNewContact() {
   };
 }
 
-createContact(contact: Contact): void {
-  this.contactService.createContact(contact);
+createContact(): void {
+  this.contactService.createContact(this.contact)
+  .then(contact => this.contact = contact);
   this.goBack();
 }
 
-updateContact(contact: Contact): void {
-  this.contactService.updateContact(contact);
+updateContact(): void {
+  this.contactService.updateContact(this.contact)
+  .then(contact => this.contact = contact);
   this.goBack();
 }
 
-deleteContact(contactId: String): void {
-  this.contactService.deleteContact(contactId);
+deleteContact(): void {
+  this.contactService.deleteContact(this.contact._id.toString())
+  .then((deletedContactID: String) => this.deletedID = deletedContactID);
   this.goBack();
 }
-
 
 /*
   @Input()

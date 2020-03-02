@@ -4,11 +4,11 @@
     <ul class="list-group">
       <a class="list-group-item"
         *ngFor="let contact of contacts | slice: (page-1) * pageSize: (page-1) * pageSize + pageSize "
-        routerLink="/detail/{{contact.id}}">
+        routerLink="/detail/{{contact._id}}">
         {{contact.word}}
       </a>
     </ul>
-  <button class="btn btn-warning" routerLink="/detail">New</button>
+  <button class="btn btn-warning" routerLink="/detail/0">New</button>
   <ngb-pagination [collectionSize]="contacts.length" [(page)]="page" [pageSize]="pageSize" [maxSize]="maxSize" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>
 
     <!--
