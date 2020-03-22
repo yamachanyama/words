@@ -19,6 +19,8 @@
       <label for="contact-NG">NG</label>
       <input class="form-control" name="contact-NG" [(ngModel)]="contact.NG" placeholder="ng"/>
     </div>
+    <div>DATE: {{contact.createDate}}</div>
+    <p></p>
 
     <button class="btn btn-primary" *ngIf="!contact._id" (click)="createContact()">Create</button>
     <button class="btn btn-info" *ngIf="contact._id" (click)="updateContact()">Update</button>

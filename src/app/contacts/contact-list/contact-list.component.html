@@ -1,27 +1,45 @@
 <div class="row">
-<!--  <div class="col-md-5"> -->
-    <h2>Words</h2>
+    <h3>Words: <input [(ngModel)]="keyword">
+      <button class="btn btn-primary" *ngIf="keyword" (click)="Search()">Search!!</button>
+    </h3>
     <ul class="list-group">
       <a class="list-group-item"
-        *ngFor="let contact of contacts | slice: (page-1) * pageSize: (page-1) * pageSize + pageSize "
-        routerLink="/detail/{{contact._id}}">
+        *ngFor="let contact of contacts" routerLink="/detail/{{contact._id}}">
         {{contact.word}}
       </a>
     </ul>
   <button class="btn btn-warning" routerLink="/detail/0">New</button>
-  <ngb-pagination [collectionSize]="contacts.length" [(page)]="page" [pageSize]="pageSize" [maxSize]="maxSize" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>
+  <ngb-pagination id="sample" [collectionSize]="count" [(page)]="page" [pageSize]="pageSize" [maxSize]="maxSize" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>
 
-    <!--
-    </div>
+  <!--
+  *ngFor="let contact of contacts | slice: (page-1) * pageSize: (page-1) * pageSize + pageSize "
 
-    <div class="col-md-5 col-md-offset-2">
+  <ngb-pagination [collectionSize]="contacts?.length" [(page)]="page" [pageSize]="pageSize" [maxSize]="maxSize" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>
+-->
+
+<!--
+<div class="row">
+  <div class="col-md-5">
+    <h2>Contacts</h2>
+    <ul class="list-group">
+      <li class="list-group-item"
+        *ngFor="let contact of contacts"
+        (click)="selectContact(contact)"
+        [class.active]="contact === selectedContact">
+        {{contact.name}}
+      </li>
+    </ul>
+    <button class="btn btn-warning" (click)="createNewContact()">New</button>
+  </div>
+  <div class="col-md-5 col-md-offset-2">
     <contact-details
       [contact]="selectedContact"
       [createHandler]="addContact"
       [updateHandler]="updateContact"
       [deleteHandler]="deleteContact">
     </contact-details>
-    </div>
-    -->
+  </div>
+</div>
+-->
 
 </div>

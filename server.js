@@ -1,6 +1,6 @@
 var express = require("express");
 var bodyParser = require("body-parser");
-var mongodb = require("mongodb");
+var mongodb = require("mongodb"),assert = require('assert');
 var ObjectID = mongodb.ObjectID;
 
 var CONTACTS_COLLECTION = "words_test";
@@ -46,8 +46,8 @@ function handleError(res, reason, message, code) {
  *    POST: creates a new contact
  */
 
-app.get("/api/contacts", function(req, res) {
-  db.collection(CONTACTS_COLLECTION).find({}).toArray(function(err, docs) {
+app.get("/api/contacts/:id", function(req, res) {
+  db.collection(CONTACTS_COLLECTION).find({}).sort({createDate:-1}).skip(parseInt(req.params.id)).limit(10).toArray(function(err, docs) {
     if (err) {
       handleError(res, err.message, "Failed to get contacts.");
     } else {
@@ -55,15 +55,37 @@ app.get("/api/contacts", function(req, res) {
     }
   });
 });
+app.get("/api/search/:id", function(req, res) {
+  var query1 = ({word: new RegExp(".*" + req.params.id + ".*" , "i")});
+  var query2 = ({meaning: new RegExp(".*" + req.params.id + ".*" , "i")});
+/*  db.collection(CONTACTS_COLLECTION).find({ $or:[{word: req.params.id},{meaning: req.params.id}] }).toArray(function(err, docs) { */
+  db.collection(CONTACTS_COLLECTION).find({ $or:[query1,query2] }).toArray(function(err, docs) { 
+  if (err) {
+      handleError(res, err.message, "Failed to get contact");
+    } else {
+      res.status(200).json(docs);
+    }
+  });
+});
+app.get("/api/count", function(req, res) {
+  db.collection(CONTACTS_COLLECTION).count(function(err, docs) {
+    if (err) {
+        handleError(res, err.message, "Failed to get contact");
+      } else {
+        res.status(200).json(docs);
+      }
+    });
+});
 
-app.post("/api/contacts", function(req, res) {
-  var newContact = req.body;
-  newContact.createDate = new Date();
+
+app.post("/api/contact", function(req, res) {
+  var newDoc = req.body;
+  newDoc.createDate = new Date();
 
   if (!req.body.word) {
     handleError(res, "Invalid user input", "Must provide a word.", 400);
   } else {
-    db.collection(CONTACTS_COLLECTION).insertOne(newContact, function(err, doc) {
+    db.collection(CONTACTS_COLLECTION).insertOne(newDoc, function(err, doc) {
       if (err) {
         handleError(res, err.message, "Failed to create new contact.");
       } else {
@@ -78,7 +100,7 @@ app.post("/api/contacts", function(req, res) {
  *    PUT: update contact by id
  *    DELETE: deletes contact by id
  */
-app.get("/api/contacts/:id", function(req, res) {
+app.get("/api/contact/:id", function(req, res) {
   db.collection(CONTACTS_COLLECTION).findOne({ _id: new ObjectID(req.params.id)}, function(err, doc) {
     if (err) {
       handleError(res, err.message, "Failed to get contact");
@@ -88,11 +110,12 @@ app.get("/api/contacts/:id", function(req, res) {
   });
 });
 
-app.put("/api/contacts/:id", function(req, res) {
+app.put("/api/contact/:id", function(req, res) {
   var updateDoc = req.body;
   delete updateDoc._id;
+  updateDoc.createDate = new Date();
 
-  db.collection(CONTACTS_COLLECTION).updateOne({_id: new ObjectID(req.params.id)}, updateDoc, function(err, doc) {
+  db.collection(CONTACTS_COLLECTION).updateOne({_id: new ObjectID(req.params.id)}, {$set:updateDoc}, function(err, doc) {
     if (err) {
       handleError(res, err.message, "Failed to update contact");
     } else {
@@ -102,7 +125,7 @@ app.put("/api/contacts/:id", function(req, res) {
   });
 });
 
-app.delete("/api/contacts/:id", function(req, res) {
+app.delete("/api/contact/:id", function(req, res) {
   db.collection(CONTACTS_COLLECTION).deleteOne({_id: new ObjectID(req.params.id)}, function(err, result) {
     if (err) {
       handleError(res, err.message, "Failed to delete contact");

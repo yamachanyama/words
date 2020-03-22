@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Contact } from '../contact';
 import { ContactService } from '../contact.service';
+// import { of } from 'rxjs';
 
 @Component({
   selector: 'contact-list',
@@ -9,20 +10,38 @@ import { ContactService } from '../contact.service';
 })
 
 export class ContactListComponent implements OnInit {
-  contacts: Contact[]
+  contacts: Contact[];
+  keyword: string;
+  skip: number =0;
+  count: number; //collectionsize
+
 /*
   selectedContact: Contact
 */
   
   page=1;
-  pageSize=10;
-  maxSize=10;
+  pageSize=10;//number of lists per a page
+  maxSize=5;
 
   constructor(private contactService: ContactService) { }
 
+  public observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) =>{
+      this.contactService
+       .getContacts((this.page-1)*this.pageSize)
+        .then((contacts: Contact[]) => {
+          this.contacts = contacts.map((contact) => {
+            return contact;
+          });
+        });
+      console.log("mutation happen ! page=" + this.page);
+    });
+  });
+  private target:any;
+
   ngOnInit() {
-     this.contactService
-      .getContacts()
+    this.contactService
+      .getContacts(this.skip)
       .then((contacts: Contact[]) => {
         this.contacts = contacts.map((contact) => {
           /*
@@ -35,8 +54,47 @@ export class ContactListComponent implements OnInit {
           */
           return contact;
         });
+        console.log(this.contacts);
+      });
+
+    this.contactService
+      .getContacts_count()
+      .then((Count: number) => this.count = Count);
+
+    this.target = document.getElementById('sample');
+    const opt:MutationObserverInit = {
+      attributes: true,
+      characterData: true
+    };
+    this.observer.observe(this.target,opt); // ここでhrefを監視
+
+  }
+
+  Search(){
+    this.contactService
+      .getContacts_search(this.keyword)
+      .then((contacts: Contact[]) => {
+        this.contacts = contacts.map((contact) => {
+          return contact;
+        });
       });
   }
+
+  /*
+  NextContact(){
+    console.log(this.page);
+    this.contactService
+      .getContacts((this.page-1)*this.pageSize)
+      .then((contacts: Contact[]) => {
+        this.contacts = contacts.map((contact) => {
+          return contact;
+        });
+        console.log("NextContact happen !");
+      });
+  */
+
+  }
+
 
   /*
   selectContact(contact: Contact) {
@@ -73,5 +131,3 @@ export class ContactListComponent implements OnInit {
     return this.contacts;
   }
   */
-
-}

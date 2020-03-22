@@ -28,8 +28,7 @@ ngOnInit(): void {
 
 getContact(): void {
   const _id = this.route.snapshot.paramMap.get('id');
-  console.log(_id);
-  if (_id == '') {
+  if (_id == '0') {
     this.createNewContact();
   }
   else{
@@ -47,7 +46,7 @@ createNewContact() {
     word: '',
     meaning: '',
     NG: 'TRUE',
-    MEMENTO_ID: ''
+    createDate: ''
   };
 }
 
