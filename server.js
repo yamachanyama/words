@@ -3,7 +3,7 @@ var bodyParser = require("body-parser");
 var mongodb = require("mongodb"),assert = require('assert');
 var ObjectID = mongodb.ObjectID;
 
-var CONTACTS_COLLECTION = "words_test";
+var CONTACTS_COLLECTION = "words";
 
 var app = express();
 app.use(bodyParser.json());
