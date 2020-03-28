@@ -25,7 +25,7 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "run-p debug1 debug4",
+    "start": "node server.js",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
