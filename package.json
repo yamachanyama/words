@@ -33,7 +33,8 @@
     "debug1": "ng serve --proxy-config proxy.conf.json --open",
     "debug2": "json-server --watch contactdata2.json --routes routes.json",
     "debug3": "ng serve --open",
-    "debug4": "node server.js"
+    "debug4": "node server.js",
+    "postinstall": "ng build --output-path dist"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.10.0",
